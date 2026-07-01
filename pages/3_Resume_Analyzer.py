@@ -1,6 +1,8 @@
 import streamlit as st
 from analyzer import extract_text, analyze_resume
 from skills import job_roles
+import pandas as pd
+
 
 # Back button
 if st.button("Back to Home"):
@@ -27,14 +29,13 @@ if uploaded_file:
 
     st.subheader("Resume Score")
     st.write(str(score) + " /100")
-    import pandas as pd
 
-chart_data = pd.DataFrame({
-    "Category": ["Matched Skills", "Missing Skills"],
-    "Count": [len(found), len(missing)]
-})
+    chart_data = pd.DataFrame({
+        "Category": ["Matched Skills", "Missing Skills"],
+        "Count": [len(found), len(missing)]
+    })
 
-st.bar_chart(chart_data.set_index("Category"))
+    st.bar_chart(chart_data.set_index("Category"))
 
     st.subheader("Skills Found")
     st.write(found)
