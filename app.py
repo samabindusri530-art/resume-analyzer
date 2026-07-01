@@ -1,43 +1,17 @@
 import streamlit as st
-from analyzer import extract_text, analyze_resume
-from skills import job_roles
-
 
 st.set_page_config(page_title="AI Resume Analyzer")
 
-
 st.title("AI Resume Analyzer")
 
+st.write("Welcome to AI Resume Analyzer")
 
-uploaded_file = st.file_uploader(
-    "Upload Resume PDF",
-    type=["pdf"]
-)
+st.subheader("Project Features")
 
+st.write("1. Analyze Resume PDF")
+st.write("2. Check Skills Match")
+st.write("3. Resume Improvement Tips")
+st.write("4. Job Role Skill Requirements")
+st.write("5. About Project")
 
-role = st.selectbox(
-    "Select Job Role",
-    list(job_roles.keys())
-)
-
-
-if uploaded_file:
-
-    text = extract_text(uploaded_file)
-
-    found, missing, score = analyze_resume(text, role)
-
-    st.subheader("Resume Score")
-    st.write(str(score) + " /100")
-
-    st.subheader("Skills Found")
-    st.write(found)
-
-    st.subheader("Missing Skills")
-    st.write(missing)
-
-    if score > 70:
-        st.success("Good Resume Match")
-
-    else:
-        st.warning("Need Skill Improvement")
+st.success("Use sidebar to navigate pages")
