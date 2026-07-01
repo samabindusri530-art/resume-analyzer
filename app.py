@@ -11,22 +11,22 @@ st.write("Welcome to AI Resume Analyzer")
 st.subheader("Choose a Page")
 
 if st.button("📝 Register"):
-    st.switch_page("1_Register")
+    st.switch_page("pages/1_Register.py")
 
 if st.button("🔐 Login"):
-    st.switch_page("2_Login")
+    st.switch_page("pages/2_Login.py")
 
 if st.button("📄 Resume Analyzer"):
-    st.switch_page("3_Resume_Analyzer")
+    st.switch_page("pages/3_Resume_Analyzer.py")
 
 if st.button("🤖 Resume Tips"):
-    st.switch_page("4_Resume_Tips")
+    st.switch_page("pages/4_Resume_Tips.py")
 
 if st.button("🎯 Career Advisor"):
-    st.switch_page("5_AI_Career_Advisor")
+    st.switch_page("pages/5_AI_Career_Advisor.py")
 
 if st.button("💼 Job Roles"):
-    st.switch_page("6_Job_Roles")
+    st.switch_page("pages/6_Job_Roles.py")
 
 if st.button("ℹ About"):
-    st.switch_page("7_About_Project")
+    st.switch_page("pages/7_About_Project.py")
