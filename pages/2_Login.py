@@ -1,6 +1,9 @@
 import streamlit as st
 import csv
 
+if st.button("Back to Home"):
+    st.switch_page("app.py")
+
 st.title("Login")
 
 email = st.text_input("Email")
