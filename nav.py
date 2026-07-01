@@ -19,7 +19,7 @@ def show_nav():
     )
 
     if page == "Home":
-        st.switch_page("app")
+        st.rerun()   # ✅ FIX HERE
 
     elif page == "Register":
         st.switch_page("1_Register")
