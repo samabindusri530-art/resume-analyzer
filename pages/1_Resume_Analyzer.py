@@ -2,6 +2,10 @@ import streamlit as st
 from analyzer import extract_text, analyze_resume
 from skills import job_roles
 
+# Back button
+if st.button("Back to Home"):
+    st.switch_page("app.py")
+
 
 st.title("Resume Analyzer")
 
