@@ -26,4 +26,4 @@ if st.button("Register"):
 st.divider()
 
 if st.button("➡ Go to Login"):
-    st.switch_page("2_Login")
+    st.switch_page("pages/2_Login.py")
