@@ -7,42 +7,39 @@ def show_nav():
     page = st.sidebar.radio(
         "Go to",
         [
-            "🏠 Home",
-            "📝 Register",
-            "🔐 Login",
-            "📄 Resume Analyzer",
-            "🤖 AI Tips",
-            "🎯 Career Advisor",
-            "💼 Job Roles",
-            "ℹ About"
+            "Home",
+            "Register",
+            "Login",
+            "Resume Analyzer",
+            "AI Tips",
+            "Career Advisor",
+            "Job Roles",
+            "About"
         ]
     )
 
-    # STORE selection
-    st.session_state["page"] = page
+    # SIMPLE DIRECT NAVIGATION (NO BUTTON NEEDED)
 
-    if st.sidebar.button("Open Page"):
+    if page == "Home":
+        st.switch_page("app")
 
-        if page == "🏠 Home":
-            st.switch_page("app")
+    elif page == "Register":
+        st.switch_page("Register")
 
-        elif page == "📝 Register":
-            st.switch_page("1_Register")
+    elif page == "Login":
+        st.switch_page("Login")
 
-        elif page == "🔐 Login":
-            st.switch_page("2_Login")
+    elif page == "Resume Analyzer":
+        st.switch_page("Resume_Analyzer")
 
-        elif page == "📄 Resume Analyzer":
-            st.switch_page("3_Resume_Analyzer")
+    elif page == "AI Tips":
+        st.switch_page("Resume_Tips")
 
-        elif page == "🤖 AI Tips":
-            st.switch_page("4_Resume_Tips")
+    elif page == "Career Advisor":
+        st.switch_page("Career_Advisor")
 
-        elif page == "🎯 Career Advisor":
-            st.switch_page("5_AI_Career_Advisor")
+    elif page == "Job Roles":
+        st.switch_page("Job_Roles")
 
-        elif page == "💼 Job Roles":
-            st.switch_page("6_Job_Roles")
-
-        elif page == "ℹ About":
-            st.switch_page("7_About_Project")
+    elif page == "About":
+        st.switch_page("About_Project")
