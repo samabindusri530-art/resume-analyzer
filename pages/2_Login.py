@@ -17,25 +17,19 @@ if st.button("Login"):
 
     if username in users and users[username] == password:
         st.success("Login Successful 🎉")
-
         st.session_state["logged_in"] = True
         st.session_state["user"] = username
-
-        st.info("Go to Resume Analyzer")
-
     else:
         st.error("Invalid Credentials")
 
 st.divider()
 
-# FLOW BUTTONS (IMPORTANT FOR YOUR PROJECT)
-
 col1, col2 = st.columns(2)
 
 with col1:
-    if st.button("⬅ Go to Register"):
+    if st.button("⬅ Register"):
         st.switch_page("1_Register")
 
 with col2:
-    if st.button("➡ Continue"):
+    if st.button("➡ Resume Analyzer"):
         st.switch_page("3_Resume_Analyzer")
