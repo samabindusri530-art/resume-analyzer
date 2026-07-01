@@ -1,5 +1,9 @@
 import streamlit as st
 
+# Back button
+if st.button("Back to Home"):
+    st.switch_page("app.py")
+
 st.title("Resume Improvement Tips")
 
 tips = [
