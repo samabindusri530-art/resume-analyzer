@@ -1,6 +1,11 @@
 import streamlit as st
 import csv
 
+import streamlit as st
+
+if st.button("Back to Home"):
+    st.switch_page("app.py")
+
 st.title("Register")
 
 name = st.text_input("Name")
@@ -14,3 +19,4 @@ if st.button("Register"):
         writer.writerow([name, email, password])
 
     st.success("Registered Successfully")
+    
