@@ -1,22 +1,48 @@
 import streamlit as st
 
-PAGES = {
-    "🏠 Home": "app",
-    "📝 Register": "pages/1_Register",
-    "🔐 Login": "pages/2_Login",
-    "📄 Resume Analyzer": "pages/3_Resume_Analyzer",
-    "🤖 AI Tips": "pages/4_Resume_Tips",
-    "🎯 Career Advisor": "pages/5_AI_Career_Advisor",
-    "💼 Job Roles": "pages/6_Job_Roles",
-    "ℹ About": "pages/7_About_Project"
-}
-
 def show_nav():
+
     st.sidebar.title("📌 Navigation")
 
-    choice = st.sidebar.radio(
+    page = st.sidebar.radio(
         "Go to",
-        list(PAGES.keys())
+        [
+            "🏠 Home",
+            "📝 Register",
+            "🔐 Login",
+            "📄 Resume Analyzer",
+            "🤖 AI Tips",
+            "🎯 Career Advisor",
+            "💼 Job Roles",
+            "ℹ About"
+        ]
     )
 
-    st.switch_page(PAGES[choice])
+    # STORE selection
+    st.session_state["page"] = page
+
+    if st.sidebar.button("Open Page"):
+
+        if page == "🏠 Home":
+            st.switch_page("app")
+
+        elif page == "📝 Register":
+            st.switch_page("1_Register")
+
+        elif page == "🔐 Login":
+            st.switch_page("2_Login")
+
+        elif page == "📄 Resume Analyzer":
+            st.switch_page("3_Resume_Analyzer")
+
+        elif page == "🤖 AI Tips":
+            st.switch_page("4_Resume_Tips")
+
+        elif page == "🎯 Career Advisor":
+            st.switch_page("5_AI_Career_Advisor")
+
+        elif page == "💼 Job Roles":
+            st.switch_page("6_Job_Roles")
+
+        elif page == "ℹ About":
+            st.switch_page("7_About_Project")
