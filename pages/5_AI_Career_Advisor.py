@@ -1,136 +1,59 @@
 import streamlit as st
+from nav import show_nav
 
-# ---------------- CHECK RESUME ----------------
+show_nav()
+
+st.title("🤖 AI Career Advisor (Resume Based)")
+
 if "resume_text" not in st.session_state:
-    st.warning("⚠ Please upload your resume first on Home page")
+    st.warning("⚠ Please upload resume first in Resume Analyzer")
     st.stop()
 
-# ---------------- NAVIGATION ----------------
-col1, col2 = st.columns([1, 1])
+text = st.session_state["resume_text"].lower()
 
-with col1:
-    if st.button("⬅ Previous Page"):
-        st.switch_page("pages/ai_tips.py")
+st.subheader("📄 Detected Skills from Resume")
 
-with col2:
-    if st.button("➡ Next Page"):
-        st.switch_page("app.py")
+skills_detected = []
 
-st.title("🤖 AI Career Advisor")
+if "python" in text:
+    skills_detected.append("Python")
+if "sql" in text:
+    skills_detected.append("SQL")
+if "html" in text:
+    skills_detected.append("HTML/CSS")
+if "java" in text:
+    skills_detected.append("Java")
+if "machine learning" in text:
+    skills_detected.append("Machine Learning")
 
-st.write("Get career suggestions based on your skills or resume")
+st.write(skills_detected)
 
-# ---------------- INPUT ----------------
-skills_input = st.text_area(
-    "Enter Your Skills",
-    placeholder="Example: python, sql, html, css"
-)
-
-# ---------------- BUTTON ----------------
-if st.button("🔍 Analyze Career Path"):
-
-    skills = skills_input.lower()
-
-    st.divider()
-
-    # ---------------- DATA SCIENCE ----------------
-    if "python" in skills and "sql" in skills:
-
-        st.success("🎯 Best Career Path: Data Analyst / Data Scientist")
-
-        st.subheader("🏢 Recommended Companies")
-        st.write("""
-        • Google  
-        • Microsoft  
-        • Amazon  
-        """)
-
-        st.subheader("📚 Skills To Improve")
-        st.write("""
-        • Pandas  
-        • NumPy  
-        • Machine Learning  
-        • Data Visualization  
-        """)
-
-    # ---------------- FRONTEND ----------------
-    elif "html" in skills and "css" in skills:
-
-        st.success("🎯 Best Career Path: Frontend Developer")
-
-        st.subheader("🏢 Recommended Companies")
-        st.write("""
-        • Flipkart  
-        • Infosys  
-        • TCS  
-        """)
-
-        st.subheader("📚 Skills To Improve")
-        st.write("""
-        • JavaScript  
-        • React  
-        • APIs  
-        • UI/UX Design  
-        """)
-
-    # ---------------- SOFTWARE ENGINEER ----------------
-    elif "java" in skills or "c++" in skills:
-
-        st.success("🎯 Best Career Path: Software Engineer")
-
-        st.subheader("🏢 Recommended Companies")
-        st.write("""
-        • Google  
-        • Microsoft  
-        • Adobe  
-        """)
-
-        st.subheader("📚 Skills To Improve")
-        st.write("""
-        • Data Structures  
-        • Algorithms  
-        • System Design  
-        • Problem Solving  
-        """)
-
-    # ---------------- AI / ML ----------------
-    elif "machine learning" in skills or "deep learning" in skills:
-
-        st.success("🎯 Best Career Path: AI / ML Engineer")
-
-        st.subheader("🏢 Recommended Companies")
-        st.write("""
-        • OpenAI  
-        • NVIDIA  
-        • Google DeepMind  
-        """)
-
-        st.subheader("📚 Skills To Improve")
-        st.write("""
-        • TensorFlow  
-        • PyTorch  
-        • Neural Networks  
-        • Model Deployment  
-        """)
-
-    # ---------------- DEFAULT ----------------
-    else:
-
-        st.warning("⚠ Need more technical skills")
-
-        st.subheader("📌 Suggested Skills To Learn")
-        st.write("""
-        • Python  
-        • SQL  
-        • Git & GitHub  
-        • Data Structures  
-        • Web Development  
-        """)
-
-# ---------------- FLOW BUTTON ----------------
 st.divider()
 
-st.write("👉 Continue your career journey")
+# ---------------- CAREER LOGIC ----------------
+if "python" in text and "sql" in text:
+    st.success("🎯 Best Career: Data Analyst / Data Scientist")
 
-if st.button("➡ Go to Home / Dashboard"):
-    st.switch_page("app.py")
+    st.write("• Google, Microsoft, Amazon")
+    st.write("• Learn Pandas, NumPy, Power BI")
+
+elif "html" in text and "css" in text:
+    st.success("🎯 Best Career: Frontend Developer")
+
+    st.write("• Flipkart, Infosys, TCS")
+    st.write("• Learn React, JS, UI/UX")
+
+elif "java" in text:
+    st.success("🎯 Best Career: Software Engineer")
+
+    st.write("• Google, Microsoft, Adobe")
+    st.write("• DSA, System Design")
+
+elif "machine learning" in text:
+    st.success("🎯 Best Career: AI/ML Engineer")
+
+    st.write("• OpenAI, NVIDIA, Google DeepMind")
+    st.write("• TensorFlow, PyTorch")
+
+else:
+    st.warning("⚠ Add more technical skills to get better career suggestions")
