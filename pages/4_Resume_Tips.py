@@ -1,28 +1,31 @@
 import streamlit as st
 
-# Back button
 if st.button("Back to Home"):
     st.switch_page("app.py")
 
-st.title("Resume Improvement Tips")
+st.title("AI Resume Tips")
 
-tips = [
+resume_type = st.selectbox(
+    "Select Resume Type",
+    ["Student", "Software Engineer", "Data Scientist"]
+)
 
-    "Add Projects Section",
+if st.button("Get AI Tips"):
 
-    "Mention Technical Skills",
+    if resume_type == "Student":
+        st.write("• Add academic projects")
+        st.write("• Mention certifications")
+        st.write("• Add GitHub profile")
+        st.write("• Keep resume one page")
 
-    "Add Certifications",
+    elif resume_type == "Software Engineer":
+        st.write("• Add DSA skills")
+        st.write("• Mention backend/frontend skills")
+        st.write("• Add internship experience")
+        st.write("• Show coding profiles")
 
-    "Keep Resume One Page",
-
-    "Add GitHub Profile",
-
-    "Use Professional Email",
-
-    "Mention Achievements"
-
-]
-
-for tip in tips:
-    st.write("•", tip)
+    elif resume_type == "Data Scientist":
+        st.write("• Add machine learning projects")
+        st.write("• Mention Python libraries")
+        st.write("• Add Kaggle/GitHub links")
+        st.write("• Show data visualization skills")
