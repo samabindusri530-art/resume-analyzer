@@ -16,12 +16,12 @@ if st.button("Login"):
 
 if st.button("Resume Analyzer"):
     st.switch_page("pages/3_Resume_Analyzer.py")
-    
-if st.button("AI Career Advisor"):
-    st.switch_page("pages/4_AI_Career_Advisor.py")
 
 if st.button("Resume Tips"):
-    st.switch_page("pages/5_Resume_Tips.py")
+    st.switch_page("pages/4_Resume_Tips.py")
+    
+if st.button("AI Career Advisor"):
+    st.switch_page("pages/5_AI_Career_Advisor.py")
 
 if st.button("Job Roles"):
     st.switch_page("pages/6_Job_Roles.py")
