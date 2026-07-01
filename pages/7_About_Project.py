@@ -1,20 +1,12 @@
 import streamlit as st
+from nav import show_nav
 
-# Back button
-if st.button("Back to Home"):
-    st.switch_page("app.py")
-st.title("About Project")
+show_nav()
 
-st.write(
-    "AI Resume Analyzer is a project "
-    "that analyzes resume PDF files."
-)
+st.title("ℹ About Project")
 
-st.write(
-    "It compares user skills with "
-    "job role requirements."
-)
+st.write("AI Resume Analyzer helps analyze resumes and suggest careers.")
+st.write("Built using Streamlit + Python + ML logic")
 
-st.write(
-    "Built using Python, Streamlit and PyPDF2"
-)
+if st.button("🏠 Home"):
+    st.switch_page("app")
