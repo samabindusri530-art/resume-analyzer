@@ -45,4 +45,4 @@ Missing: {missing}
     st.divider()
 
     if st.button("➡ Resume Tips"):
-        st.switch_page("4_Resume_Tips")
+        st.switch_page("4_Resume_Tips.py")
