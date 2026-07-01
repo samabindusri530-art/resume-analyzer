@@ -1,4 +1,4 @@
-iimport streamlit as st
+import streamlit as st
 from nav import show_nav
 
 show_nav()
