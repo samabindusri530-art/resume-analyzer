@@ -1,8 +1,6 @@
 import streamlit as st
 import csv
 
-import streamlit as st
-
 if st.button("Back to Home"):
     st.switch_page("app.py")
 
