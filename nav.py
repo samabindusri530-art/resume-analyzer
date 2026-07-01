@@ -11,35 +11,33 @@ def show_nav():
             "Register",
             "Login",
             "Resume Analyzer",
-            "AI Tips",
+            "Resume Tips",
             "Career Advisor",
             "Job Roles",
             "About"
         ]
     )
 
-    # SIMPLE DIRECT NAVIGATION (NO BUTTON NEEDED)
-
     if page == "Home":
         st.switch_page("app")
 
     elif page == "Register":
-        st.switch_page("Register")
+        st.switch_page("1_Register")
 
     elif page == "Login":
-        st.switch_page("Login")
+        st.switch_page("2_Login")
 
     elif page == "Resume Analyzer":
-        st.switch_page("Resume_Analyzer")
+        st.switch_page("3_Resume_Analyzer")
 
-    elif page == "AI Tips":
-        st.switch_page("Resume_Tips")
+    elif page == "Resume Tips":
+        st.switch_page("4_Resume_Tips")
 
     elif page == "Career Advisor":
-        st.switch_page("Career_Advisor")
+        st.switch_page("5_AI_Career_Advisor")
 
     elif page == "Job Roles":
-        st.switch_page("Job_Roles")
+        st.switch_page("6_Job_Roles")
 
     elif page == "About":
-        st.switch_page("About_Project")
+        st.switch_page("7_About_Project")
