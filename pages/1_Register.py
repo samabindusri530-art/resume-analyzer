@@ -1,10 +1,16 @@
 import streamlit as st
+import csv
 
-st.title("User Registration")
+st.title("Register")
 
-name = st.text_input("Enter Name")
-email = st.text_input("Enter Email")
-password = st.text_input("Enter Password", type="password")
+name = st.text_input("Name")
+email = st.text_input("Email")
+password = st.text_input("Password", type="password")
 
 if st.button("Register"):
-    st.success("Registration Successful")
+
+    with open("users.csv", "a", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerow([name, email, password])
+
+    st.success("Registered Successfully")
