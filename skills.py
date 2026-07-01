@@ -1,4 +1,5 @@
 job_roles = {
+
     "Software Engineer": [
         "python",
         "sql",
@@ -17,8 +18,8 @@ job_roles = {
     "Data Scientist": [
         "python",
         "machine learning",
-        "pandas",
         "numpy",
+        "pandas",
         "sql"
     ]
 }
