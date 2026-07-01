@@ -6,12 +6,16 @@ st.title("AI Resume Analyzer")
 
 st.write("Welcome to AI Resume Analyzer")
 
-st.subheader("Project Features")
+st.subheader("Choose a Page")
 
-st.write("1. Analyze Resume PDF")
-st.write("2. Check Skills Match")
-st.write("3. Resume Improvement Tips")
-st.write("4. Job Role Skill Requirements")
-st.write("5. About Project")
+if st.button("Resume Analyzer"):
+    st.switch_page("pages/1_Resume_Analyzer.py")
 
-st.success("Use sidebar to navigate pages")
+if st.button("Resume Tips"):
+    st.switch_page("pages/2_Resume_Tips.py")
+
+if st.button("Job Roles"):
+    st.switch_page("pages/3_Job_Roles.py")
+
+if st.button("About Project"):
+    st.switch_page("pages/4_About_Project.py")
