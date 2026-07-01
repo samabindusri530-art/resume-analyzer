@@ -1,20 +1,30 @@
 import streamlit as st
-import csv
+from nav import show_nav
 
-if st.button("Back to Home"):
-    st.switch_page("app.py")
+show_nav()
 
-st.title("Register")
+st.title("📝 Register Page")
 
-name = st.text_input("Name")
-email = st.text_input("Email")
-password = st.text_input("Password", type="password")
+if "users" not in st.session_state:
+    st.session_state["users"] = {}
+
+username = st.text_input("Create Username")
+password = st.text_input("Create Password", type="password")
 
 if st.button("Register"):
 
-    with open("users.csv", "a", newline="") as file:
-        writer = csv.writer(file)
-        writer.writerow([name, email, password])
+    if username == "" or password == "":
+        st.warning("Please fill all fields")
 
-    st.success("Registered Successfully")
-    
+    elif username in st.session_state["users"]:
+        st.error("User already exists")
+
+    else:
+        st.session_state["users"][username] = password
+        st.success("Registration successful 🎉")
+        st.info("Now go to Login page")
+
+st.divider()
+
+if st.button("➡ Go to Login"):
+    st.switch_page("2_Login")
