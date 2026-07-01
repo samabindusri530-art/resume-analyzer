@@ -28,6 +28,3 @@ if st.button("Job Roles"):
 
 if st.button("About Project"):
     st.switch_page("pages/7_About_Project.py")
-
-if st.button("Company Resume Check"):
-    st.switch_page("pages/8_Company_Check.py")
