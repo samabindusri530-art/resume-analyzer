@@ -2,12 +2,10 @@ import streamlit as st
 from analyzer import extract_text, analyze_resume
 from skills import job_roles
 import pandas as pd
+import matplotlib.pyplot as plt
 
-
-# Back button
 if st.button("Back to Home"):
     st.switch_page("app.py")
-
 
 st.title("Resume Analyzer")
 
@@ -30,18 +28,39 @@ if uploaded_file:
     st.subheader("Resume Score")
     st.write(str(score) + " /100")
 
-    chart_data = pd.DataFrame({
-        "Category": ["Matched Skills", "Missing Skills"],
-        "Count": [len(found), len(missing)]
-    })
+    # graph
+    fig, ax = plt.subplots()
 
-    st.bar_chart(chart_data.set_index("Category"))
+    ax.bar(
+        ["Matched Skills", "Missing Skills"],
+        [len(found), len(missing)]
+    )
+
+    st.pyplot(fig)
 
     st.subheader("Skills Found")
     st.write(found)
 
     st.subheader("Missing Skills")
     st.write(missing)
+
+    # download report
+    report = f"""
+Resume Score: {score}
+
+Skills Found:
+{found}
+
+Missing Skills:
+{missing}
+"""
+
+    st.download_button(
+        label="Download Report",
+        data=report,
+        file_name="resume_report.txt",
+        mime="text/plain"
+    )
 
     if score > 70:
         st.success("Good Resume Match")
