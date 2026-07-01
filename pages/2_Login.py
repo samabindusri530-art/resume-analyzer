@@ -1,21 +1,41 @@
 import streamlit as st
-import csv
+from nav import show_nav
 
-if st.button("Back to Home"):
-    st.switch_page("app.py")
+show_nav()
 
-st.title("Login")
+st.title("🔐 Login Page")
 
-email = st.text_input("Email")
+if "users" not in st.session_state:
+    st.session_state["users"] = {}
+
+username = st.text_input("Username")
 password = st.text_input("Password", type="password")
 
 if st.button("Login"):
 
-    with open("users.csv", "r") as file:
-        reader = csv.reader(file)
+    users = st.session_state["users"]
 
-        for row in reader:
+    if username in users and users[username] == password:
+        st.success("Login Successful 🎉")
 
-            if row[1] == email and row[2] == password:
-                st.success("Login Successful")
-                break
+        st.session_state["logged_in"] = True
+        st.session_state["user"] = username
+
+        st.info("Go to Resume Analyzer")
+
+    else:
+        st.error("Invalid Credentials")
+
+st.divider()
+
+# FLOW BUTTONS (IMPORTANT FOR YOUR PROJECT)
+
+col1, col2 = st.columns(2)
+
+with col1:
+    if st.button("⬅ Go to Register"):
+        st.switch_page("1_Register")
+
+with col2:
+    if st.button("➡ Continue"):
+        st.switch_page("3_Resume_Analyzer")
