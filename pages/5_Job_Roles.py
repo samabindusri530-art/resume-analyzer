@@ -1,15 +1,30 @@
 import streamlit as st
-from skills import job_roles
 
-# Back button
 if st.button("Back to Home"):
     st.switch_page("app.py")
 
-st.title("Job Role Skills")
+st.title("AI Job Role Recommendation")
 
-for role, skills in job_roles.items():
+skills = st.text_area(
+    "Enter Your Skills",
+    placeholder="Example: python, sql, html"
+)
 
-    st.subheader(role)
+if st.button("Recommend Role"):
 
-    for skill in skills:
-        st.write("-", skill)
+    skills = skills.lower()
+
+    if "python" in skills and "sql" in skills:
+        st.success("Recommended Role: Data Analyst")
+
+    elif "html" in skills and "css" in skills:
+        st.success("Recommended Role: Frontend Developer")
+
+    elif "machine learning" in skills:
+        st.success("Recommended Role: Data Scientist")
+
+    elif "java" in skills:
+        st.success("Recommended Role: Software Engineer")
+
+    else:
+        st.warning("Need more technical skills")
