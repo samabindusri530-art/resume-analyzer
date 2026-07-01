@@ -27,6 +27,14 @@ if uploaded_file:
 
     st.subheader("Resume Score")
     st.write(str(score) + " /100")
+    import pandas as pd
+
+chart_data = pd.DataFrame({
+    "Category": ["Matched Skills", "Missing Skills"],
+    "Count": [len(found), len(missing)]
+})
+
+st.bar_chart(chart_data.set_index("Category"))
 
     st.subheader("Skills Found")
     st.write(found)
