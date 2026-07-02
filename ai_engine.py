@@ -1,9 +1,7 @@
 import streamlit as st
-import google.generativeai as genai
+from google import genai
 
-genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
-
-model = genai.GenerativeModel("gemini-1.5-flash")
+client = genai.Client(api_key=st.secrets["GEMINI_API_KEY"])
 
 
 def analyze_resume_ai(resume_text, role):
@@ -15,11 +13,15 @@ Resume:
 {resume_text}
 
 Give:
-- Score (0-100)
+- Score
 - Skills found
 - Missing skills
 - Improvements
 """
 
-    response = model.generate_content(prompt)
+    response = client.models.generate_content(
+        model="gemini-1.5-flash",
+        contents=prompt
+    )
+
     return response.text
