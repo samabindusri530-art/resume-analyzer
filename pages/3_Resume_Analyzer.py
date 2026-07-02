@@ -1,76 +1,118 @@
 import streamlit as st
-import matplotlib.pyplot as plt
-from analyzer import extract_text
+from analyzer import extract_text, analyze_resume
 from skills import job_roles
+import matplotlib.pyplot as plt
 
-st.title("📄 AI Resume Analyzer")
+# ---------------- PAGE CONFIG ----------------
+st.set_page_config(page_title="Resume Analyzer", layout="centered")
 
-# ---------------- UPLOAD ----------------
+# ---------------- NAVIGATION (INSIDE SAME FILE) ----------------
+st.sidebar.title("📌 Navigation")
+
+if st.sidebar.button("🏠 Home"):
+    st.switch_page("app.py")
+
+if st.sidebar.button("📝 Register"):
+    st.switch_page("pages/1_Register.py")
+
+if st.sidebar.button("🔐 Login"):
+    st.switch_page("pages/2_Login.py")
+
+if st.sidebar.button("📄 Resume Analyzer"):
+    st.switch_page("pages/3_Resume_Analyzer.py")
+
+if st.sidebar.button("🤖 Resume Tips"):
+    st.switch_page("pages/4_Resume_Tips.py")
+
+if st.sidebar.button("🎯 Career Advisor"):
+    st.switch_page("pages/5_AI_Career_Advisor.py")
+
+if st.sidebar.button("💼 Job Roles"):
+    st.switch_page("pages/6_Job_Roles.py")
+
+if st.sidebar.button("ℹ About"):
+    st.switch_page("pages/7_About_Project.py")
+
+# ---------------- TITLE ----------------
+st.title("📄 Resume Analyzer")
+st.write("Upload your resume and check skill match with job roles.")
+
+# ---------------- INPUTS ----------------
 uploaded_file = st.file_uploader("Upload Resume PDF", type=["pdf"])
 
-# ---------------- ROLE ----------------
-role = st.selectbox("Select Job Role", list(job_roles.keys()))
+role = st.selectbox(
+    "Select Job Role",
+    list(job_roles.keys())
+)
 
-if uploaded_file:
+# ---------------- MAIN LOGIC ----------------
+if uploaded_file is not None:
 
-    resume_text = extract_text(uploaded_file)
+    text = extract_text(uploaded_file)
 
-    st.subheader("📄 Extracted Resume")
-    st.write(resume_text)
+    st.session_state["resume_text"] = text
 
-    if st.button("🚀 Analyze Resume"):
+    found, missing, score = analyze_resume(text, role)
 
-        # ---------------- SKILLS LOGIC ----------------
-        required_skills = set(job_roles[role])
+    st.session_state["resume_score"] = score
+    st.session_state["found_skills"] = found
+    st.session_state["missing_skills"] = missing
 
-        words = set(resume_text.lower().split())
+    # ---------------- SCORE ----------------
+    st.subheader("📊 Resume Score")
+    st.progress(score / 100)
+    st.write(f"**{score} / 100**")
 
-        matched = list(required_skills & words)
-        missing = list(required_skills - words)
+    # ---------------- GRAPH ----------------
+    st.subheader("📈 Skill Analysis")
 
-        # ---------------- SCORE ----------------
-        score = int((len(matched) / len(required_skills)) * 100)
+    fig, ax = plt.subplots()
+    ax.bar(
+        ["Matched Skills", "Missing Skills"],
+        [len(found), len(missing)]
+    )
 
-        st.subheader("📊 Resume Score")
+    ax.set_ylabel("Count")
+    st.pyplot(fig)
 
-        fig, ax = plt.subplots()
-        ax.bar(["Score"], [score])
-        ax.set_ylim(0, 100)
-        st.pyplot(fig)
+    # ---------------- SKILLS ----------------
+    st.subheader("✅ Skills Found")
+    st.write(found if found else "No skills matched")
 
-        # ---------------- SKILLS ----------------
-        st.subheader("🟢 Skills Found")
-        st.write(matched)
+    st.subheader("❌ Missing Skills")
+    st.write(missing if missing else "No missing skills")
 
-        st.subheader("🔴 Missing Skills")
-        st.write(missing)
-
-        # ---------------- REPORT ----------------
-        report = f"""
+    # ---------------- REPORT ----------------
+    report = f"""
 RESUME ANALYSIS REPORT
+----------------------
 
-Role: {role}
-Score: {score}/100
+Score: {score} / 100
 
 Skills Found:
-{matched}
+{', '.join(found) if found else 'None'}
 
 Missing Skills:
-{missing}
+{', '.join(missing) if missing else 'None'}
 """
 
-        st.download_button(
-            "📥 Download Report",
-            report,
-            file_name="resume_report.txt"
-        )
+    st.download_button(
+        label="⬇ Download Report",
+        data=report,
+        file_name="resume_report.txt",
+        mime="text/plain"
+    )
 
-        # ---------------- SESSION STORAGE ----------------
-        st.session_state["role"] = role
-        st.session_state["score"] = score
-        st.session_state["matched"] = matched
-        st.session_state["missing"] = missing
+    # ---------------- RESULT MESSAGE ----------------
+    if score > 70:
+        st.success("🎉 Good Resume Match")
+    elif score > 40:
+        st.warning("⚠ Moderate Resume - Improve Skills")
+    else:
+        st.error("❌ Weak Resume - Needs Improvement")
 
-        # ---------------- NEXT PAGE ----------------
-        if st.button("➡️ Next Page: Tips"):
-            st.switch_page("pages/4_Resume_Tips.py")
+    # ---------------- NEXT PAGE BUTTON ----------------
+    st.divider()
+
+    if st.button("➡ Go to Next Page (Suggestions)"):
+        st.switch_page("pages/4_Resume_Tips.py")
