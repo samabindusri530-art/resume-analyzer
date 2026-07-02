@@ -1,40 +1,29 @@
 import streamlit as st
 import google.generativeai as genai
 
-# Get API key from Streamlit secrets
-GEMINI_API_KEY = st.secrets["GEMINI_API_KEY"]
+genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
 
-# Configure Gemini
-genai.configure(api_key=GEMINI_API_KEY)
-
-# Use stable model
 model = genai.GenerativeModel("gemini-1.5-flash")
 
 
-def analyze_resume_ai(resume_text):
+def analyze_resume_ai(resume_text, role):
 
     prompt = f"""
-You are an expert resume reviewer.
+You are an expert resume analyzer.
 
-Analyze this resume and provide:
+User selected role: {role}
 
-1. Resume score out of 10
-2. Missing technical skills
-3. 3 improvements needed
-4. Suitable job roles
+Analyze the resume and give:
+
+1. Resume Score (0-100)
+2. Skills Found
+3. Missing Skills
+4. Improvements
+5. Job Fit Explanation
 
 Resume:
 {resume_text}
 """
 
-    try:
-        response = model.generate_content(prompt)
-
-        # safety check
-        if response and hasattr(response, "text"):
-            return response.text
-        else:
-            return "No response received from Gemini."
-
-    except Exception as e:
-        return f"Gemini Error: {str(e)}"
+    response = model.generate_content(prompt)
+    return response.text
