@@ -1,43 +1,54 @@
 import streamlit as st
 from analyzer import extract_text
-from ai_engine import analyze_resume_ai, resume_chatbot
+from ai_engine import analyze_resume_ai
 
-st.set_page_config(page_title="AI Resume Analyzer", layout="wide")
+st.title("📄 AI Resume Analyzer")
 
-st.title("📄 AI Resume Analyzer + ChatGPT Assistant")
+# ---------------- SESSION INIT ----------------
+if "resume_text" not in st.session_state:
+    st.session_state.resume_text = ""
 
+if "analysis" not in st.session_state:
+    st.session_state.analysis = ""
+
+# ---------------- UPLOAD ----------------
 uploaded_file = st.file_uploader("Upload Resume PDF")
-job_role = st.text_input("Enter Job Role")
 
-# store chat
-if "chat_history" not in st.session_state:
-    st.session_state.chat_history = []
+job_role = st.selectbox("Select Job Role", [
+    "Data Analyst",
+    "Software Engineer",
+    "AI/ML Engineer",
+    "Web Developer",
+    "Cyber Security",
+    "Other"
+])
 
 if uploaded_file:
-    resume_text = extract_text(uploaded_file)
+    st.session_state.resume_text = extract_text(uploaded_file)
 
-    st.success("Resume Loaded Successfully")
+    st.success("Resume Uploaded Successfully")
 
-    # ---------------- ANALYZE BUTTON ----------------
-    if st.button("Analyze Resume"):
-        result = analyze_resume_ai(resume_text, job_role)
-        st.subheader("📊 AI Analysis")
-        st.write(result)
+# ---------------- ANALYZE ----------------
+if st.button("Generate AI Resume Score"):
+    st.session_state.analysis = analyze_resume_ai(
+        st.session_state.resume_text,
+        job_role
+    )
 
-    # ---------------- CHATBOT ----------------
-    st.subheader("💬 Chat with AI Resume Assistant")
+# ---------------- OUTPUT ----------------
+if st.session_state.analysis:
+    st.subheader("📊 AI Resume Report")
+    st.write(st.session_state.analysis)
 
-    user_input = st.chat_input("Ask anything about your resume...")
+# ---------------- DOWNLOAD REPORT ----------------
+if st.session_state.analysis:
+    st.download_button(
+        "⬇ Download Report",
+        st.session_state.analysis,
+        file_name="resume_report.txt"
+    )
 
-    if user_input:
-        response = resume_chatbot(resume_text, user_input, job_role)
-
-        st.session_state.chat_history.append(("You", user_input))
-        st.session_state.chat_history.append(("AI", response))
-
-    # display chat
-    for role, msg in st.session_state.chat_history:
-        if role == "You":
-            st.markdown(f"🧑‍💻 **You:** {msg}")
-        else:
-            st.markdown(f"🤖 **AI:** {msg}")
+# ---------------- NEXT PAGE ----------------
+if st.session_state.analysis:
+    if st.button("Next ➡ Resume Tips"):
+        st.switch_page("pages/4_Resume_Tips.py")
