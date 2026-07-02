@@ -1,31 +1,36 @@
-import requests
 import streamlit as st
+import google.generativeai as genai
 
-HF_TOKEN = st.secrets["HF_TOKEN"]
+# Read API key from Streamlit Secrets
+GEMINI_API_KEY = st.secrets["GEMINI_API_KEY"]
 
-API_URL = "https://api-inference.huggingface.co/models/gpt2"
+# Configure Gemini
+genai.configure(api_key=GEMINI_API_KEY)
 
-headers = {
-    "Authorization": f"Bearer {HF_TOKEN}"
-}
+# Load model
+model = genai.GenerativeModel("gemini-2.5-flash")
+
 
 def analyze_resume_ai(resume_text):
 
-    prompt = f"Analyze this resume: {resume_text}"
+    prompt = f"""
+    Analyze the following resume.
 
-    payload = {
-        "inputs": prompt
-    }
+    Give me:
+
+    1. Resume score out of 10
+    2. Missing technical skills
+    3. Improvements needed
+    4. Suitable career suggestions
+
+    Resume:
+    {resume_text}
+    """
 
     try:
-        response = requests.post(
-            API_URL,
-            headers=headers,
-            json=payload,
-            timeout=30
-        )
+        response = model.generate_content(prompt)
 
-        return response.json()
+        return response.text
 
     except Exception as e:
-        return f"Error connecting: {e}"
+        return f"Error: {e}"
