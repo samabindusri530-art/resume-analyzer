@@ -13,14 +13,14 @@ Resume:
 {resume_text}
 
 Give:
-- Score
+- Score (0-100)
 - Skills found
 - Missing skills
 - Improvements
 """
 
     response = client.models.generate_content(
-        model="gemini-1.5-flash",
+        model="models/gemini-1.5-flash",
         contents=prompt
     )
 
