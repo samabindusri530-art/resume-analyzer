@@ -1,30 +1,20 @@
 import streamlit as st
-import google.generativeai as genai
+from analyzer import extract_text
+from ai_engine import analyze_resume_ai
 
-GEMINI_API_KEY = st.secrets["GEMINI_API_KEY"]
+st.title("🤖 AI Resume Analyzer")
 
-genai.configure(api_key=GEMINI_API_KEY)
+uploaded_file = st.file_uploader("Upload Resume (PDF)", type=["pdf"])
 
-model = genai.GenerativeModel("gemini-1.5-flash")
+if uploaded_file is not None:
+    resume_text = extract_text(uploaded_file)
 
+    st.subheader("Extracted Resume Text")
+    st.write(resume_text)
 
-def analyze_resume_ai(resume_text):
+    if st.button("Analyze Resume"):
+        with st.spinner("Analyzing with AI..."):
+            result = analyze_resume_ai(resume_text)
 
-    prompt = f"""
-Analyze this resume.
-
-Give:
-1. Resume score out of 10
-2. Missing technical skills
-3. Improvements needed
-4. Suitable job roles
-
-Resume:
-{resume_text}
-"""
-
-    try:
-        response = model.generate_content(prompt)
-        return response.text
-    except Exception as e:
-        return f"Error: {e}"
+        st.subheader("AI Analysis Result")
+        st.write(result)
