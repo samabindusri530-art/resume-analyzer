@@ -49,19 +49,19 @@ role = st.selectbox(
 # ---------------- MAIN LOGIC ----------------
 if uploaded_file is not None:
 
-    # Extract resume text
+    # Extract text from PDF
     text = extract_text(uploaded_file)
 
-    # Store in session
+    # Save resume text
     st.session_state["resume_text"] = text
 
-    # Old skill-based analysis
+    # Existing analysis
     found, missing, score = analyze_resume(text, role)
 
-    # AI analysis from Hugging Face
+    # Gemini AI analysis
     ai_feedback = analyze_resume_ai(text)
 
-    # Store results
+    # Save results
     st.session_state["resume_score"] = score
     st.session_state["found_skills"] = found
     st.session_state["missing_skills"] = missing
@@ -94,7 +94,8 @@ if uploaded_file is not None:
     # ---------------- AI FEEDBACK ----------------
     st.subheader("🤖 AI Resume Feedback")
 
-    st.write(ai_feedback)
+    with st.spinner("Analyzing with AI..."):
+        st.write(ai_feedback)
 
     # ---------------- REPORT ----------------
     report = f"""
@@ -108,6 +109,9 @@ Skills Found:
 
 Missing Skills:
 {', '.join(missing) if missing else 'None'}
+
+AI Feedback:
+{ai_feedback}
 """
 
     st.download_button(
