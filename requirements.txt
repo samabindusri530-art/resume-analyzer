@@ -2,4 +2,5 @@ streamlit
 PyPDF2
 pandas
 matplotlib
-google-genai
+openai
+pdfminer.six
