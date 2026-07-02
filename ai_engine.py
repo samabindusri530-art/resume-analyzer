@@ -6,22 +6,30 @@ client = genai.Client(api_key=st.secrets["GEMINI_API_KEY"])
 
 def analyze_resume_ai(resume_text, role):
 
+    # 🔥 prevent huge input crash
+    resume_text = resume_text[:8000]
+
     prompt = f"""
+You are an expert resume analyzer.
+
 Role: {role}
 
 Resume:
 {resume_text}
 
-Give:
+Return:
 - Score (0-100)
 - Skills found
 - Missing skills
 - Improvements
 """
 
-    response = client.models.generate_content(
-        model="models/gemini-1.5-flash",
-        contents=prompt
-    )
+    try:
+        response = client.models.generate_content(
+            model="models/gemini-1.5-flash",
+            contents=prompt
+        )
+        return response.text
 
-    return response.text
+    except Exception as e:
+        return f"Error: {str(e)}"
