@@ -1,5 +1,6 @@
 import streamlit as st
 from analyzer import extract_text, analyze_resume
+from ai_engine import analyze_resume_ai
 from skills import job_roles
 import matplotlib.pyplot as plt
 
