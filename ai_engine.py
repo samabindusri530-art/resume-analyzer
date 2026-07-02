@@ -3,25 +3,25 @@ import google.generativeai as genai
 
 genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
 
-model = genai.GenerativeModel("gemini-pro")
+# ✅ FIXED MODEL NAME
+model = genai.GenerativeModel("models/gemini-1.5-flash")
+
 
 def analyze_resume_ai(resume_text, role):
 
     prompt = f"""
-You are an expert resume analyzer.
+You are a professional resume analyzer AI.
 
-User selected role: {role}
-
-Analyze the resume and give:
-
-1. Resume Score (0-100)
-2. Skills Found
-3. Missing Skills
-4. Improvements
-5. Job Fit Explanation
+Role selected: {role}
 
 Resume:
 {resume_text}
+
+Give:
+1. Score (0-100)
+2. Skills Found
+3. Missing Skills
+4. Improvements
 """
 
     response = model.generate_content(prompt)
