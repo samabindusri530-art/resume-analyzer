@@ -1,16 +1,13 @@
 import requests
 import streamlit as st
 
-# Read token from Streamlit Secrets
 HF_TOKEN = st.secrets["HF_TOKEN"]
 
-# Hugging Face model
 API_URL = "https://api-inference.huggingface.co/models/google/flan-t5-base"
 
 headers = {
     "Authorization": f"Bearer {HF_TOKEN}"
 }
-
 
 def analyze_resume(resume_text):
 
@@ -26,9 +23,7 @@ def analyze_resume(resume_text):
     {resume_text}
     """
 
-    payload = {
-        "inputs": prompt
-    }
+    payload = {"inputs": prompt}
 
     response = requests.post(
         API_URL,
