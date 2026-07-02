@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 # ---------------- PAGE CONFIG ----------------
 st.set_page_config(page_title="Resume Analyzer", layout="centered")
 
-# ---------------- NAVIGATION (INSIDE SAME FILE) ----------------
+# ---------------- NAVIGATION ----------------
 st.sidebar.title("📌 Navigation")
 
 if st.sidebar.button("🏠 Home"):
@@ -49,12 +49,19 @@ role = st.selectbox(
 # ---------------- MAIN LOGIC ----------------
 if uploaded_file is not None:
 
+    # Extract resume text
     text = extract_text(uploaded_file)
 
+    # Store in session
     st.session_state["resume_text"] = text
 
+    # Old skill-based analysis
     found, missing, score = analyze_resume(text, role)
 
+    # AI analysis from Hugging Face
+    ai_feedback = analyze_resume_ai(text)
+
+    # Store results
     st.session_state["resume_score"] = score
     st.session_state["found_skills"] = found
     st.session_state["missing_skills"] = missing
@@ -68,6 +75,7 @@ if uploaded_file is not None:
     st.subheader("📈 Skill Analysis")
 
     fig, ax = plt.subplots()
+
     ax.bar(
         ["Matched Skills", "Missing Skills"],
         [len(found), len(missing)]
@@ -82,6 +90,11 @@ if uploaded_file is not None:
 
     st.subheader("❌ Missing Skills")
     st.write(missing if missing else "No missing skills")
+
+    # ---------------- AI FEEDBACK ----------------
+    st.subheader("🤖 AI Resume Feedback")
+
+    st.write(ai_feedback)
 
     # ---------------- REPORT ----------------
     report = f"""
@@ -112,7 +125,7 @@ Missing Skills:
     else:
         st.error("❌ Weak Resume - Needs Improvement")
 
-    # ---------------- NEXT PAGE BUTTON ----------------
+    # ---------------- NEXT PAGE ----------------
     st.divider()
 
     if st.button("➡ Go to Next Page (Suggestions)"):
