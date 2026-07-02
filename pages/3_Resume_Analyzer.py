@@ -1,148 +1,30 @@
 import streamlit as st
-from analyzer import extract_text, analyze_resume
-from ai_engine import analyze_resume_ai
-from skills import job_roles
-import matplotlib.pyplot as plt
+import google.generativeai as genai
 
-# ---------------- PAGE CONFIG ----------------
-st.set_page_config(page_title="Resume Analyzer", layout="centered")
+GEMINI_API_KEY = st.secrets["GEMINI_API_KEY"]
 
-# ---------------- NAVIGATION ----------------
-st.sidebar.title("📌 Navigation")
+genai.configure(api_key=GEMINI_API_KEY)
 
-if st.sidebar.button("🏠 Home"):
-    st.switch_page("app.py")
+model = genai.GenerativeModel("gemini-1.5-flash")
 
-if st.sidebar.button("📝 Register"):
-    st.switch_page("pages/1_Register.py")
 
-if st.sidebar.button("🔐 Login"):
-    st.switch_page("pages/2_Login.py")
+def analyze_resume_ai(resume_text):
 
-if st.sidebar.button("📄 Resume Analyzer"):
-    st.switch_page("pages/3_Resume_Analyzer.py")
+    prompt = f"""
+Analyze this resume.
 
-if st.sidebar.button("🤖 Resume Tips"):
-    st.switch_page("pages/4_Resume_Tips.py")
+Give:
+1. Resume score out of 10
+2. Missing technical skills
+3. Improvements needed
+4. Suitable job roles
 
-if st.sidebar.button("🎯 Career Advisor"):
-    st.switch_page("pages/5_AI_Career_Advisor.py")
-
-if st.sidebar.button("💼 Job Roles"):
-    st.switch_page("pages/6_Job_Roles.py")
-
-if st.sidebar.button("ℹ About"):
-    st.switch_page("pages/7_About_Project.py")
-
-# ---------------- TITLE ----------------
-st.title("📄 Resume Analyzer")
-st.write("Upload your resume and check skill match with job roles.")
-
-# ---------------- INPUTS ----------------
-uploaded_file = st.file_uploader("Upload Resume PDF", type=["pdf"])
-
-role = st.selectbox(
-    "Select Job Role",
-    list(job_roles.keys())
-)
-
-# ---------------- MAIN LOGIC ----------------
-if uploaded_file is not None:
-
-    # DEBUG 1
-    st.write("✅ DEBUG 1: File uploaded successfully")
-
-    # Extract text
-    text = extract_text(uploaded_file)
-
-    # DEBUG 2
-    st.write("✅ DEBUG 2: Text extracted successfully")
-
-    # Show first 300 chars
-    st.write("Preview of extracted resume text:")
-    st.write(text[:300])
-
-    # Store text
-    st.session_state["resume_text"] = text
-
-    # Old analyzer
-    found, missing, score = analyze_resume(text, role)
-
-    # DEBUG 3
-    st.write("✅ DEBUG 3: Old resume analyzer completed")
-
-    # COMMENTING AI TEMPORARILY
-    # ai_feedback = analyze_resume_ai(text)
-
-    # DEBUG 4
-    st.write("✅ DEBUG 4: Reached after AI step")
-
-    # Save results
-    st.session_state["resume_score"] = score
-    st.session_state["found_skills"] = found
-    st.session_state["missing_skills"] = missing
-
-    # ---------------- SCORE ----------------
-    st.subheader("📊 Resume Score")
-    st.progress(score / 100)
-    st.write(f"**{score} / 100**")
-
-    # ---------------- GRAPH ----------------
-    st.subheader("📈 Skill Analysis")
-
-    fig, ax = plt.subplots()
-
-    ax.bar(
-        ["Matched Skills", "Missing Skills"],
-        [len(found), len(missing)]
-    )
-
-    ax.set_ylabel("Count")
-    st.pyplot(fig)
-
-    # ---------------- SKILLS ----------------
-    st.subheader("✅ Skills Found")
-    st.write(found if found else "No skills matched")
-
-    st.subheader("❌ Missing Skills")
-    st.write(missing if missing else "No missing skills")
-
-    # ---------------- AI FEEDBACK ----------------
-    st.subheader("🤖 AI Resume Feedback")
-
-    st.write("AI temporarily disabled for debugging")
-
-    # ---------------- REPORT ----------------
-    report = f"""
-RESUME ANALYSIS REPORT
-----------------------
-
-Score: {score} / 100
-
-Skills Found:
-{', '.join(found) if found else 'None'}
-
-Missing Skills:
-{', '.join(missing) if missing else 'None'}
+Resume:
+{resume_text}
 """
 
-    st.download_button(
-        label="⬇ Download Report",
-        data=report,
-        file_name="resume_report.txt",
-        mime="text/plain"
-    )
-
-    # ---------------- RESULT MESSAGE ----------------
-    if score > 70:
-        st.success("🎉 Good Resume Match")
-    elif score > 40:
-        st.warning("⚠ Moderate Resume - Improve Skills")
-    else:
-        st.error("❌ Weak Resume - Needs Improvement")
-
-    # ---------------- NEXT PAGE ----------------
-    st.divider()
-
-    if st.button("➡ Go to Next Page (Suggestions)"):
-        st.switch_page("pages/4_Resume_Tips.py")
+    try:
+        response = model.generate_content(prompt)
+        return response.text
+    except Exception as e:
+        return f"Error: {e}"
