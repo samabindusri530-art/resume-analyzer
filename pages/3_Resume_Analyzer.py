@@ -49,17 +49,33 @@ role = st.selectbox(
 # ---------------- MAIN LOGIC ----------------
 if uploaded_file is not None:
 
-    # Extract text from PDF
+    # DEBUG 1
+    st.write("✅ DEBUG 1: File uploaded successfully")
+
+    # Extract text
     text = extract_text(uploaded_file)
 
-    # Save resume text
+    # DEBUG 2
+    st.write("✅ DEBUG 2: Text extracted successfully")
+
+    # Show first 300 chars
+    st.write("Preview of extracted resume text:")
+    st.write(text[:300])
+
+    # Store text
     st.session_state["resume_text"] = text
 
-    # Existing analysis
+    # Old analyzer
     found, missing, score = analyze_resume(text, role)
 
-    # Gemini AI analysis
-    ai_feedback = analyze_resume_ai(text)
+    # DEBUG 3
+    st.write("✅ DEBUG 3: Old resume analyzer completed")
+
+    # COMMENTING AI TEMPORARILY
+    # ai_feedback = analyze_resume_ai(text)
+
+    # DEBUG 4
+    st.write("✅ DEBUG 4: Reached after AI step")
 
     # Save results
     st.session_state["resume_score"] = score
@@ -94,8 +110,7 @@ if uploaded_file is not None:
     # ---------------- AI FEEDBACK ----------------
     st.subheader("🤖 AI Resume Feedback")
 
-    with st.spinner("Analyzing with AI..."):
-        st.write(ai_feedback)
+    st.write("AI temporarily disabled for debugging")
 
     # ---------------- REPORT ----------------
     report = f"""
@@ -109,9 +124,6 @@ Skills Found:
 
 Missing Skills:
 {', '.join(missing) if missing else 'None'}
-
-AI Feedback:
-{ai_feedback}
 """
 
     st.download_button(
