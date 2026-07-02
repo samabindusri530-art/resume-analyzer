@@ -9,21 +9,24 @@ headers = {
     "Authorization": f"Bearer {HF_TOKEN}"
 }
 
-def analyze_resume(resume_text):
+
+def analyze_resume_ai(resume_text):
 
     prompt = f"""
-    Analyze this resume and provide:
+    Analyze this resume.
 
-    1. Resume score out of 10
-    2. Missing skills
-    3. Improvements needed
-    4. Career suggestions
+    Give:
+    1. 3 improvements needed
+    2. Missing technical skills
+    3. Career suggestions
 
     Resume:
     {resume_text}
     """
 
-    payload = {"inputs": prompt}
+    payload = {
+        "inputs": prompt
+    }
 
     response = requests.post(
         API_URL,
